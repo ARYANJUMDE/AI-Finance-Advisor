@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useFinanceStore, analyzeTransactions, detectAnomalies, generateForecasts } from "@/lib/store";
 import type { Transaction } from "@/lib/types";
 
 export function FileUpload() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const {
@@ -229,17 +230,19 @@ export function FileUpload() {
         )}
 
         <div className="flex gap-4">
-          <Button disabled={isLoading || isAnalyzing} asChild>
-            <label className="cursor-pointer">
-              <input
-                type="file"
-                accept=".csv"
-                className="hidden"
-                onChange={handleFileSelect}
-                disabled={isLoading || isAnalyzing}
-              />
-              Choose File
-            </label>
+          <input
+            type="file"
+            accept=".csv"
+            className="hidden"
+            onChange={handleFileSelect}
+            disabled={isLoading || isAnalyzing}
+            ref={fileInputRef}
+          />
+          <Button 
+            disabled={isLoading || isAnalyzing}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            Choose File
           </Button>
         </div>
 
