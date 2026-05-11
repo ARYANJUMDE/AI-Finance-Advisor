@@ -269,7 +269,7 @@ export async function POST(request: NextRequest) {
           date: parseDate(row[dateCol]),
           description: description.trim(),
           amount: Math.abs(amount),
-          type: amount < 0 || category === "Income" ? (category === "Income" ? "credit" : "debit") : "debit",
+          type: (amount < 0 || category === "Income" ? (category === "Income" ? "credit" : "debit") : "debit") as "debit" | "credit",
           category,
         };
       })
