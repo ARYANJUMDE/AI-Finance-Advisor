@@ -264,14 +264,16 @@ export async function POST(request: NextRequest) {
         const description = row[descCol] || "Unknown";
         const category = categorizeTransaction(description);
 
+        const transactionType: "debit" | "credit" = amount < 0 || category === "Income" ? (category === "Income" ? "credit" : "debit") : "debit";
+
         return {
           id: generateId(),
           date: parseDate(row[dateCol]),
           description: description.trim(),
           amount: Math.abs(amount),
-          type: (amount < 0 || category === "Income" ? (category === "Income" ? "credit" : "debit") : "debit") as "debit" | "credit",
+          type: transactionType,
           category,
-        };
+        } as Transaction;
       })
       .filter((t) => t.amount !== 0)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
