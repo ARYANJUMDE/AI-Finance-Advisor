@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateText } from "ai";
 import type { Transaction, BudgetAnalysis } from "@/lib/types";
+import { NeuralFinancialAdvisor } from "@/lib/neural-advisor";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,6 +14,11 @@ export async function POST(request: NextRequest) {
     if (!message) {
       return NextResponse.json({ error: "No message provided" }, { status: 400 });
     }
+
+    // Initialize neural financial advisor for rule-based analysis
+    const advisor = new NeuralFinancialAdvisor();
+    const neuralPatterns = advisor.analyzeFinances(transactions, budgetAnalysis);
+    const enhancedContext = advisor.generateEnhancedContext(transactions, budgetAnalysis, message);
 
     // Build context about user's finances
     const totalExpenses = transactions
@@ -40,6 +46,17 @@ export async function POST(request: NextRequest) {
 
     const recentTransactions = transactions.slice(0, 10);
 
+    // Apply rule-based filtering based on neural patterns
+    let ruleContext = "";
+    if (neuralPatterns.length > 0) {
+      const topIssues = neuralPatterns.filter((p) => p.severity === "high").slice(0, 2);
+      if (topIssues.length > 0) {
+        ruleContext = `\n## Priority Issues Detected by Rules Engine\n${topIssues
+          .map((issue) => `- ${issue.recommendation}`)
+          .join("\n")}`;
+      }
+    }
+
     const context = `
 ## User's Financial Summary
 - Total Income: $${totalIncome.toFixed(2)}
@@ -54,19 +71,29 @@ ${topCategories.join("\n")}
 ## Recent Transactions
 ${recentTransactions.map((t) => `- ${t.date}: ${t.description} - $${Math.abs(t.amount).toFixed(2)} (${t.category})`).join("\n")}
 
-## Total Transactions Analyzed: ${transactions.length}
+## Total Transactions Analyzed: ${transactions.length}${ruleContext}
+
+## Neural Network Analysis
+${enhancedContext}
 `;
 
-    const systemPrompt = `You are an expert AI Personal Finance Advisor. You help users understand their spending patterns, provide budget suggestions, savings recommendations, and answer questions about their finances.
+    const systemPrompt = `You are an expert AI Personal Finance Advisor powered by neural network-based financial analysis. You help users understand their spending patterns, provide budget suggestions, savings recommendations, and answer questions about their finances.
 
-Be conversational, helpful, and specific. Reference actual numbers from their data when relevant. Provide actionable advice.
+You use advanced rule-based analysis with neural networks to detect financial patterns and anomalies. Be conversational, helpful, and specific. Reference actual numbers from their data and neural analysis when relevant. Provide actionable advice based on detected patterns.
 
-If asked about why they spent so much, analyze their spending patterns and identify the main contributors.
-If asked about savings, calculate and suggest specific savings goals.
-If asked about budgets, provide specific budget recommendations based on their spending.
-If asked general questions, provide helpful financial education.
+Key capabilities:
+- Analyze spending volatility and trends using statistical models
+- Detect spending concentration risks across categories
+- Assess income stability and recommend emergency fund sizes
+- Apply decision rules based on financial metrics
+- Provide personalized recommendations based on neural pattern confidence scores
 
-Always be encouraging and supportive while being honest about areas for improvement.
+If asked about why they spent so much, analyze their spending patterns using the neural analysis and identify the main contributors.
+If asked about savings, calculate and suggest specific savings goals based on detected volatility and trends.
+If asked about budgets, provide specific budget recommendations based on their spending patterns and neural insights.
+If asked general questions, provide helpful financial education grounded in their specific situation.
+
+Always be encouraging and supportive while being honest about areas for improvement. Reference the Neural Network Analysis section to ground your recommendations in detected patterns.
 
 ${context}`;
 
