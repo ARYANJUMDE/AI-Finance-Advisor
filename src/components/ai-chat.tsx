@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils";
 import type { ChatMessage } from "@/lib/types";
 
 const SUGGESTED_QUESTIONS = [
-  "Why did I spend so much last month?",
-  "What are my top spending categories?",
-  "How can I save more money?",
-  "Are there any unusual transactions?",
-  "Give me budget recommendations",
-  "Predict my expenses for next month",
+  "What is my highest spending?",
+  "How much have I saved?",
+  "Total income?",
+  "Spending by category",
+  "How is my financial health?",
+  "Average monthly expenses?",
 ];
 
 export function AIChat() {
@@ -71,7 +71,7 @@ export function AIChat() {
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: data.response || data.error || "I apologize, but I couldn&apos;t process your request.",
+        content: data.answer || data.response || data.error || "I apologize, but I couldn&apos;t process your request.",
         timestamp: new Date(),
       };
       addChatMessage(assistantMessage);
@@ -79,7 +79,7 @@ export function AIChat() {
       addChatMessage({
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "I&apos;m having trouble connecting. Please make sure your GROQ_API_KEY is configured.",
+        content: "I&apos;m having trouble connecting. Please try again.",
         timestamp: new Date(),
       });
     } finally {
@@ -136,9 +136,9 @@ export function AIChat() {
                   />
                 </svg>
               </div>
-              <h3 className="font-medium mb-2">Ask me anything about your finances</h3>
+              <h3 className="font-medium mb-2">Ask me about your finances</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                I can analyze your spending patterns, suggest budgets, and provide personalized advice.
+                I can answer questions about spending, earnings, savings, categories, and financial health.
               </p>
               <div className="flex flex-wrap gap-2 justify-center">
                 {SUGGESTED_QUESTIONS.slice(0, 4).map((question) => (
