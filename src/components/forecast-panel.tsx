@@ -36,11 +36,11 @@ export function ForecastPanel() {
   const chartConfig = {
     expenses: {
       label: "Expenses",
-      color: "hsl(var(--chart-5))",
+      color: "#EF4444",
     },
     income: {
       label: "Income",
-      color: "hsl(var(--chart-1))",
+      color: "#10B981",
     },
   };
 
@@ -86,12 +86,12 @@ export function ForecastPanel() {
               />
               <Bar
                 dataKey="income"
-                fill="hsl(var(--chart-1))"
+                fill="#10B981"
                 radius={[4, 4, 0, 0]}
               />
               <Bar
                 dataKey="expenses"
-                fill="hsl(var(--chart-5))"
+                fill="#EF4444"
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>

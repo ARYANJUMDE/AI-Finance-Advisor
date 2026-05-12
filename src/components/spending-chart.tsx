@@ -11,11 +11,14 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
 import { useFinanceStore } from "@/lib/store";
 
 const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
+  "#3B82F6", // Blue
+  "#EF4444", // Red
+  "#10B981", // Green
+  "#F59E0B", // Amber
+  "#8B5CF6", // Purple
+  "#EC4899", // Pink
+  "#14B8A6", // Teal
+  "#6366F1", // Indigo
 ];
 
 export function SpendingChart() {

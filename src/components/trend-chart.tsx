@@ -54,11 +54,11 @@ export function TrendChart() {
   const chartConfig = {
     income: {
       label: "Income",
-      color: "hsl(var(--chart-1))",
+      color: "#10B981",
     },
     expenses: {
       label: "Expenses",
-      color: "hsl(var(--chart-5))",
+      color: "#EF4444",
     },
   };
 
@@ -88,24 +88,24 @@ export function TrendChart() {
                 <linearGradient id="fillIncome" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="hsl(var(--chart-1))"
+                    stopColor="#10B981"
                     stopOpacity={0.8}
                   />
                   <stop
                     offset="95%"
-                    stopColor="hsl(var(--chart-1))"
+                    stopColor="#10B981"
                     stopOpacity={0.1}
                   />
                 </linearGradient>
                 <linearGradient id="fillExpenses" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="hsl(var(--chart-5))"
+                    stopColor="#EF4444"
                     stopOpacity={0.8}
                   />
                   <stop
                     offset="95%"
-                    stopColor="hsl(var(--chart-5))"
+                    stopColor="#EF4444"
                     stopOpacity={0.1}
                   />
                 </linearGradient>
@@ -134,14 +134,14 @@ export function TrendChart() {
               <Area
                 type="monotone"
                 dataKey="income"
-                stroke="hsl(var(--chart-1))"
+                stroke="#10B981"
                 fillOpacity={1}
                 fill="url(#fillIncome)"
               />
               <Area
                 type="monotone"
                 dataKey="expenses"
-                stroke="hsl(var(--chart-5))"
+                stroke="#EF4444"
                 fillOpacity={1}
                 fill="url(#fillExpenses)"
               />
@@ -150,11 +150,11 @@ export function TrendChart() {
         </ChartContainer>
         <div className="flex items-center justify-center gap-6 mt-2">
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-chart-1" />
+            <div className="size-3 rounded-full" style={{ backgroundColor: "#10B981" }} />
             <span className="text-xs text-muted-foreground">Income</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-chart-5" />
+            <div className="size-3 rounded-full" style={{ backgroundColor: "#EF4444" }} />
             <span className="text-xs text-muted-foreground">Expenses</span>
           </div>
         </div>
